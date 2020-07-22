@@ -1,0 +1,72 @@
+  IntelliJ IDEARubyMine
+  expand: "<==============================================>\n  Expand the window so the lines are straight\n<==============================================>"
+  intro_screen: "===============================================\n= = = = = = = W E L C O M E   T O : = = = = = =\n===============================================\n== ROCK | PAPER | SCISSORS | LIZARD | SPOCK  ==\n===============================================\n============== RULES OF THE GAME: =============\n\n     [ROCK] crushes {LIZARD} & {SCISSORS}\n   [PAPER] covers {ROCK} & disproves {SPOCK}\n [SCISSORS] cuts {PAPER} & decapitates {LIZARD}\n    [LIZARD] poisons {SPOCK} & eats {PAPER}\n [SPOCK] smashes {SCISSORS} & vaporizes {ROCK}\n\n*  *      * It is You vs an Opponent *     *  *\n*  * WHOEVER REACHES 5 POINTS FIRST WINS &    *\n*    WILL BE CROWNED THE ULTIMATE CHAMPION *  *\n*                    * * *                    *\n* PLAYER WITH THE MOST WINS OUT OF 15 MATCHES *\n*         WILL BE CROWNED THE CHAMPION        *\n==============================================="
+  start_line: "************************************************"
+  block_line: "================================================"
+  name_error: "      * OOPS! NAME FIELD CAN'T BE EMPTY, *      \n       * OR BIGGER THAN 12 CHARACTERS! *        "
+  header: "================================================\n==  ROCK | PAPER | SCISSORS | LIZARD | SPOCK  ==\n================== * * * * * ==================="
+  get_ready_header: "============== GET READY TO PLAY ===============\n==  ROCK | PAPER | SCISSORS | LIZARD | SPOCK  ==\n==================== * * * ====================="
+  players_choice: "============ CHOOSE YOUR OPPONENT: =============\n= (1) Rajesh      (2) Leonard      (3) Penny   =\n=                                              =\n= (4) Sheldon    (5) Howard     (6) Bernadette =\n=                                              =\n= (7) Amy           (8) Wil          9) Random =\n================================================"
+  choose_opponent: "=> Please make your selection below,\n=> Enter the number of your preferred opponent:\n (Random allows the computer to choose for you)\n"
+  choose_move: "============== CHOOSE YOUR MOVE: ===============\n==   (1)ROCK      (2)PAPER      (3)SCISSORS   ==\n==                                            ==\n==   (4)LIZARD    (5)SPOCK      (6)RANDOM     ==\n================================================\n (To select move, enter number or name of move) "
+  default_tie_screen: "=============== YOU HAVE PLAYED ================\n==  ROCK | PAPER | SCISSORS | LIZARD | SPOCK  ==\n================================================\n******** THERE IS NO CHAMPION THIS TIME ********\n\n\n************ IT IS  AN ULTIMATE TIE ************\n\n\n** PLEASE PLAY AGAIN! - BETTER LUCK NEXT TIME **\n================================================"
+  max_rounds_win_header: "============ YOU HAVE BEEN PLAYING =============\n==  ROCK | PAPER | SCISSORS | LIZARD | SPOCK  ==\n== WE HAVE REACHED MAXIMUM NUMBER  OF ROUNDS ===\n==================== * * * =====================\n*** WE HAVE A DEFAULT WINNER WITH MOST WINS: ***"
+  default_human_winner_bottom: "************* CONGRATULATIONS?!?! **************\n****************** * * * * * *******************\n************* PLEASE PLAY AGAIN & **************\n**** SEE IF YOU CAN BE AN ULTIMATE CHAMPION ****\n==================== * * * ====================="
+  default_rival_winner_bottom: "=  IF YOU LEARN FROM A LOSS YOU HAVE NOT LOST  =\n* * * * * * * * *  * * * * * * * * * * * * * * *\n**********    PLEASE PLAY AGAIN &    ***********\n**********   BETTER LUCK NEXT TIME   ***********\n==================== * * * ====================="
+  winner_top_portion: "================ YOU HAVE WON! =================\n==  ROCK | PAPER | SCISSORS | LIZARD | SPOCK  ==\n==================== * * * =====================\n********* WINNER WINNER CHICKEN DINNER *********"
+  winner_bottom_portion: "*********** IS THE ULTIMATE CHAMPION ***********\n* * * * * *            *             * * * * * *\n***********     CONGRATULATIONS!     ***********\n* * * * * *            *             * * * * * *\n***********   PLEASE PLAY AGAIN &    ***********\n**** TEST YOUR MIGHT AGAINST OTHER PLAYERS *****\n==================== * * * ====================="
+  looser_top_portion: "================ YOU HAVE LOST! ================\n==  ROCK | PAPER | SCISSORS | LIZARD | SPOCK  ==\n==================== * * * =====================\n* \"IF YOU LEARN FROM A LOSS YOU HAVE NOT LOST\" *"
+  looser_bottom_portion: "*********** IS THE ULTIMATE CHAMPION ***********\n* * * * * *            *             * * * * * *\n************* PLEASE PLAY AGAIN & **************\n************ BETTER LUCK NEXT TIME *************\n==================== * * * ====================="
+  continue_new_rival: "=================== THIS WAS ===================\n ==  ROCK | PAPER | SCISSORS | LIZARD | SPOCK  ==\n ================== * * * * * ===================\n *************  WOULD YOU LIKE TO  **************\n ****************  PLAY AGAIN?  *****************"
+  continue_new_rival_bottom: "   (By Choosing To Continue You Will Go Back    \n       To The OPPONENT SELECTION SCREEN)        \n================================================"
+  continue_opp_screen: "=================== THIS WAS ===================\n ==  ROCK | PAPER | SCISSORS | LIZARD | SPOCK  ==\n ================== * * * * * ===================\n *************  WOULD YOU LIKE TO  **************\n ****************  PLAY AGAIN?  *****************\n   (By Choosing To Continue You Will Go Back    \n       To The OPPONENT SELECTION SCREEN)        \n================================================\n        • Enter 'yes'/'y' or 'no'/'n' •         \n• • • • • • • • • • > "
+  outro: "============ THANK YOU FOR PLAYING =============\n==  ROCK | PAPER | SCISSORS | LIZARD | SPOCK  ==\n================== * * * * * ===================\n*                      *                       *\n*     This game was built by Marcos Avila      *\n*          marcosavila@protonmail.com          *\n*  with knowledge aquired from LAUNCH SCHOOL   *\n* * * * * * * www.LaunchSchool.com * * * * * * *\n*                      *                       *\n*WOULD YOU LIKE TO RESET THE GAME & PLAY AGAIN?*\n        • Enter 'yes' or 'y' to reset,          \n           'no' or 'n' exit entirely •          \n================================================\n• • • • • • • • • • > "
+
+
+  Rajesh:
+    0: "           \"We'd just see what's what\""
+    1: " \"I’ve said this before and I’ll say it again:\n                 Aquaman sucks!\""
+    2: "  \"I haven’t cried this hard since Toy Story 3.\""
+    3: "  \"This is nice. All my friends hanging out,\n  watching Ellen. It's like,\n  what am I gonna do with my other two wishes?\""
+
+  Leonard:
+    0: "           \"Merry Newton-mas everyone!\"        "
+    1: "        \"12 years after high school\n         and I’m still at the nerd table.\""
+    2: " \"I was thinking more of a biosocial\n  exploration with a neurochemical overlay.\""
+    3: "   \"What are ya doing there? Working on a\n    new plan to catch the Road Runner?\""
+
+  Penny:
+    0: " \"No One Ever Bought Me Drinks At A Bar\n  Because My Brain Just Popped Out Of My Shirt.\""
+    1: "              \"What Up, SHEL-BOT?\"              "
+    2: "           \"Holy Crap On A Cracker!\"            "
+    3: "       \"Oh, you’re going to jibber-jabber\n        about jibber-jabber.\""
+
+  Sheldon:
+    0: "*               \"B-A-Z-I-N-G-A!\"               *"
+    1: "*   \"I'm Not Crazy. My Mother Had Me Tested!\"  *"
+    2: "            \"I'm Exceedingly Smart,            \n           I Graduated College At 14!\"         "
+    3: "*           \"That’s No Reason To Cry.          *\n*        One Cries Because One Is Sad.         *\n* For example, I cry because others are stupid *\n*            and it makes me sad.\"             *"
+
+  Howard:
+    0: "    \"Clearly, you’ve never been to my house\n     for dinner on Rosh Hashana.\""
+    1: "          \"Oh crap that's terrifying!\"         "
+    2: "   \"My mother calls me every day at work to\n   see if I had a healthy bowel movement.\""
+    3: "  \"If it’s ‘creepy’ to use the internet,\n  military satellites and robot aircraft\n  to find a house full of gorgeous young models\n  so I can drop in on them unexpected,\n  then fine. I’m ‘creepy.\""
+
+  Wil:
+    0: "             \"Game over, Moonpie.\"              "
+    1: " \"Oh, Internet. This is so going all over you.\" "
+    2: "          (imitating Jar-Jar Binks)\n       \"Mee-sa think that very funny!\""
+    3: "             \"Game over, Moonpie.\"              \n             \"Game over, Moonpie.\"              \n             \"Game over, Moonpie.\"              "
+
+  Bernadette:
+    0: "    \"If you like pushing buttons so much,\n    try pushing them on the washing machine.\""
+    1: "   \"Sorry doesn't clean my underpants, buddy.\""
+    2: " \"I’m too small for Twister & roller coasters.\n And sitting with my feet on the floor.\n Hope you enjoyed the prenatal cigarettes, Mom!\""
+    3: "    \"If you want butter, I’ll get ya butter!\""
+
+  Amy:
+    0: " \"Usually when someone’s being talked about\n behind their back, it’s me and it’s right\n in front of my face.\" "
+    1: "   \"I promised myself if I ever got friends\n    I’d do whatever they said.\n    Really, I’m lucky you found me\n    before a cult did.\""
+    2: "  \"It would be nice to be with a man who\n   wants to know what’s underneath my cardigan.\n   FYI, it’s another cardigan.\""
+    3: " \"Do you have any idea how hard it is to laugh\n  at a knock knock joke that starts \n ‘Knock Knock Knock, Amy. Knock Knock Knock, Amy\n  Knock Knock Knock, Amy’?\""
