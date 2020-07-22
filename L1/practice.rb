@@ -1,4 +1,3 @@
-IntelliJ IDEARubyMine
 # rubocop:disable Metrics/LineLength, Metrics/MethodLength
 
 class Player
@@ -105,11 +104,11 @@ class Move
   attr_accessor :type, :enemies
 
   ENEMIES = {
-    "paper" => %w(lizard scissors),
-    "scissors" => %w(rock spock),
-    "rock" => %w(spock paper),
-    "spock" => %w(lizard paper),
-    "lizard" => %w(rock scissors)
+      "paper" => %w(lizard scissors),
+      "scissors" => %w(rock spock),
+      "rock" => %w(spock paper),
+      "spock" => %w(lizard paper),
+      "lizard" => %w(rock scissors)
   }
   def initialize(type)
     self.type = type
