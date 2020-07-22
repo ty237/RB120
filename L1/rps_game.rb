@@ -1,3 +1,4 @@
+IntelliJ IDEARubyMine
 # rubocop:disable Metrics/LineLength, Metrics/MethodLength
 
 class Player
