@@ -1,292 +1,261 @@
-class Move
-	attr_reader :value
+# rubocop:disable Metrics/LineLength, Metrics/MethodLength
 
-	VALUES = ['rock', 'paper', 'scissors', 'spock', 'lizard']
+class Player
+	attr_accessor :move, :name, :move_history, :num_of_moves
 
-	def initialize(value)
-		@value = value
+	CHOICES = %w(rock paper scissors lizard spock)
+
+	def initialize
+		set_name
+		self.move_history = []
+		self.num_of_moves = 0
 	end
 
-	def >(other_move)
-		@beats.include?(other_move.to_s)
+	def update_history
+		self.num_of_moves += 1
+		self.move_history += ["Move #{num_of_moves}: #{move}"]
+	end
+
+	def choose
+		update_history
+	end
+end
+
+class Human < Player
+	SIMPLE_CHOICES = %w(r p s l sp)
+	def set_name
+		name = ""
+		system('clear')
+		loop do
+			puts "What's your name?"
+			name = gets.chomp
+			system('clear')
+			break unless name.empty? || name.length > 10
+			puts "Sorry, must enter a value shorter than 10 characters."
+		end
+		self.name = name
+	end
+
+	def ask_for_input
+		choice = nil
+		loop do
+			puts "Please choose rock, paper, scissors, lizard or spock."
+			choice = gets.chomp.downcase
+			break if CHOICES.include?(choice) || SIMPLE_CHOICES.include?(choice)
+			system('clear')
+			puts "That was invalid, please enter rock, paper, scissors, lizard, or spock."
+		end
+		choice
+	end
+
+	def choose
+		choice = ask_for_input
+		self.move = Move.new(input_to_choice(choice))
+		super
+	end
+
+	def input_to_choice(choice)
+		return "spock" if choice == "sp"
+		CHOICES.each { |word| choice = word if word[0] == choice }
+		choice
+	end
+end
+
+class Computer < Player
+end
+
+class Ron < Computer
+	OPTIONS = ["lizard", "lizard", "spock"]
+	def set_name
+		self.name = "Ron"
+	end
+
+	def choose
+		self.move = Move.new(OPTIONS.sample)
+		super
+	end
+end
+
+class Harry < Computer
+	OPTIONS = ["rock", "rock", "paper", "scissors", "scissors"]
+	def set_name
+		self.name = "Harry"
+	end
+
+	def choose
+		self.move = Move.new(OPTIONS.sample)
+		super
+	end
+end
+
+class Hermione < Computer
+	OPTIONS = ["rock", "paper", "paper", "scissors", "lizard", "spock"]
+	def set_name
+		self.name = "Hermione"
+	end
+
+	def choose
+		self.move = Move.new(OPTIONS.sample)
+		super
+	end
+end
+
+class Move
+	attr_accessor :type, :enemies
+
+	ENEMIES = {
+			"paper" => %w(lizard scissors),
+			"scissors" => %w(rock spock),
+			"rock" => %w(spock paper),
+			"spock" => %w(lizard paper),
+			"lizard" => %w(rock scissors)
+	}
+	def initialize(type)
+		self.type = type
+		self.enemies = ENEMIES[type]
+	end
+
+	def >(opponent_type)
+		# winning is true, losing is false
+		!enemies.include?(opponent_type.type)
 	end
 
 	def to_s
-		@value
+		type
 	end
 end
-
-# ------------------------------
-
-class Rock < Move
-	def initialize
-		@value = 'rock'
-		@beats = ['scissors', 'lizard']
-	end
-end
-# ---------------------------
-
-class Spock < Move
-	def initialize
-		@value = 'spock'
-		@beats = ['rock', 'scissors']
-	end
-end
-# ---------------------------
-
-class Lizard < Move
-	def initialize
-		@value = 'lizard'
-		@beats = ['spock', 'paper']
-	end
-end
-# ---------------------------
-
-class Paper < Move
-	def initialize
-		@value = 'paper'
-		@beats = ['rock', 'spock']
-	end
-end
-# ---------------------------
-
-class Scissors < Move
-	def initialize
-		@value = 'scissors'
-		@beats = ['lizard', 'paper']
-	end
-end
-
-# ----------------------------
-
-class Scoreboard
-	attr_reader :human_score, :computer_score
-
-	def initialize
-		@human_score = 0
-		@computer_score = 0
-	end
-
-	def update(player)
-		@human_score += 1 if player.class == Human
-		@computer_score += 1 if player.class != Human
-	end
-
-	def display(human, computer)
-		puts "#{human}'s Score: #{human_score}"
-		puts "#{computer}'s Score: #{computer_score}"
-		puts
-	end
-
-	def winner?
-		@human_score == 3 || @computer_score == 3
-	end
-
-	def reset
-		@human_score = 0
-		@computer_score = 0
-	end
-end
-
-# -------------------------------
-
-class Player
-	attr_accessor :move, :name, :move_history, :turn
-
-	def initialize
-		@move = nil
-		set_name
-		@move_history = []
-		@turn = 1
-	end
-
-	OBJECTS = { 'rock' => Rock.new, 'paper' => Paper.new,
-	            'scissors' => Scissors.new, 'spock' => Spock.new,
-	            'lizard' => Lizard.new }
-
-	def add_to_history
-		move_history << "Turn #{turn}: #{move}"
-		@turn += 1
-	end
-
-	def display_history
-		puts "#{name} = #{move_history}"
-	end
-
-	def reset_history
-		@move_history = []
-		@turn = 1
-	end
-end
-
-# ------------------------------
-
-class Human < Player
-	def set_name
-		system 'clear'
-		puts "What's your name, human?"
-		answer = gets.chomp
-		self.name = answer
-		system 'clear'
-	end
-
-	def choose
-		choice = nil
-		loop do
-			puts "Please choose Rock, Paper, Scissors, Spock or Lizard:"
-			choice = gets.chomp.downcase
-			break if Move::VALUES.include?(choice)
-			puts "Sorry, Invalid choice. Please try again."
-		end
-		self.move = OBJECTS[choice]
-		add_to_history
-		system 'clear'
-	end
-end
-
-# -------------------------------
-class Computer < Player
-	attr_accessor :name
-end
-
-# ------------------------------
-# Never chooses the same object twice in a row
-class R2D2 < Computer
-	def set_name
-		@name = 'R2D2'
-	end
-
-	def choose
-		self.move = OBJECTS.values.select do |object|
-			object.class != move.class
-		end.sample
-
-		add_to_history
-	end
-end
-
-# ------------------------------
-# Always chooses between Spock and Lizard
-class OptimusPrime < Computer
-	def set_name
-		@name = 'Optimus Prime'
-	end
-
-	def choose
-		self.move = [Spock.new, Lizard.new].sample
-		add_to_history
-	end
-end
-# ------------------------------
-# Always chooses a rock
-
-class WallE < Computer
-	def set_name
-		@name = 'WALL-E'
-	end
-
-	def choose
-		self.move = Rock.new
-		add_to_history
-	end
-end
-# ------------------------------
 
 class RPSGame
-	attr_accessor :human, :computer, :scoreboard
+	attr_accessor :human, :computer, :human_score, :computer_score
 
 	def initialize
 		@human = Human.new
-		@computer = [OptimusPrime.new, R2D2.new, WallE.new].sample
-		@scoreboard = Scoreboard.new
+		@computer = [Ron, Hermione, Harry].sample.new
 	end
 
-	def display_greeting_message
-		puts "Welcome to Rock, Paper, Scissors, Spock, Lizard."
-		sleep 2
-		system 'clear'
-	end
-
-	def display_moves
-		puts "You chose: #{human.move}"
-		puts "#{computer.name} chose: #{computer.move}"
-		sleep 2
-		system 'clear'
-	end
-
-	def display_winner
-		winner = nil
-		if human.move > computer.move
-			winner = human
-		elsif computer.move > human.move
-			winner = computer
-		else
-			return puts "It's a tie!"
-		end
-		scoreboard.update(winner)
-		puts "#{winner.name} won!"
+	def display_welcome_message
+		puts "Welcome to Rock, Paper, Scissors, Lizard, Spock! Lets play first to 10 points."
 	end
 
 	def display_goodbye_message
-		system 'clear'
-		puts "Thank you for playing, #{human.name}. Goodbye!"
+		puts "Thanks for playing Rock, Paper, Scissors, Lizard, Spock. Good bye!"
+	end
+
+	def display_winner(winner)
+		puts "#{human.name} chose #{human.move}."
+		puts "#{computer.name} chose #{computer.move}."
+		puts "The winner is #{winner}!"
+	end
+
+	def find_winner(human_choice, computer_choice)
+		return "nobody because it is a tie" if human_choice.type == computer_choice.type
+		return (human.name).to_s if human_choice > computer_choice
+		(computer.name).to_s
+	end
+
+	def display_score
+		puts "#{computer.name} has #{computer_score} points."
+		puts "#{human.name} has #{human_score}."
+		puts "You are #{10 - human_score} points away from winning!"
+	end
+
+	def update_score(winner)
+		self.human_score += 1 if winner == human.name
+		self.computer_score += 1 if winner == computer.name
+	end
+
+	def display_final_score
+		if human_score == 10
+			puts "Congratulations you are the grand winner!"
+		else
+			puts "You lost the whole match, better luck next time!"
+		end
+		puts "The final score was:"
+		puts "#{human.name} => #{human_score}"
+		puts "#{computer.name} => #{computer_score}."
+	end
+
+	def valid?(answer)
+		return true if ["y", "yes", "n", "no"].include?(answer)
+		false
+	end
+
+	def continue
+		puts "Press any key to continue"
+		gets
+		system('clear')
+	end
+
+	def play_game
+		human.choose
+		computer.choose
+		system('clear')
+		find_winner(human.move, computer.move)
+	end
+
+	def display_history
+		system('clear')
+		puts "-----#{human.name}-----"
+		puts human.move_history
+		puts "-----#{computer.name}-----"
+		puts computer.move_history
+		continue
+	end
+
+	def view_history_options
+		answer = nil
+		loop do
+			puts "Would you like to view your move history?"
+			answer = gets.chomp.downcase
+			break if valid?(answer)
+			system('clear')
+			puts "That was invalid, please enter y, n, yes, or no."
+		end
+		display_history if ['y', 'yes'].include?(answer)
+		system('clear')
+	end
+
+	def play_match
+		system('clear')
+		loop do
+			winner = play_game
+			display_winner(winner)
+			continue
+			view_history_options
+			update_score(winner)
+			break if [human_score, computer_score].include?(10)
+			display_score
+			continue
+		end
 	end
 
 	def play_again?
 		answer = nil
 		loop do
-			puts "Would you like to play again #{human.name}? y for yes, n for no."
-			answer = gets.chomp
-			break if ['y', 'n'].include?(answer.downcase)
-			puts 'Must be y or n'
+			puts "Would you like to play again?"
+			answer = gets.chomp.downcase
+			break if valid?(answer)
+			system('clear')
+			puts "Invalid input! Please enter y, yes, n, no."
 		end
-
-		return true if answer.downcase == 'y'
-	end
-
-	def display_scoreboard
-		scoreboard.display(human.name, computer.name)
-	end
-
-	def display_histories
-		human.display_history
-		puts
-		computer.display_history
-		puts
-	end
-
-	def reset
-		scoreboard.reset
-		human.reset_history
-		computer.reset_history
-		system 'clear'
-	end
-
-	def game_round
-		human.choose
-		computer.choose
-		display_moves
-		display_winner
-		display_scoreboard
-		display_histories
-		sleep 4
-		system 'clear'
+		return true if ["y", "yes"].include?(answer)
+		false
 	end
 
 	def play
-		display_greeting_message
+		system('clear')
+		display_welcome_message
 		loop do
-			loop do
-				game_round
-				break if scoreboard.winner?
-			end
+			self.human_score = 0
+			self.computer_score = 0
+			play_match
+			display_final_score
 			break unless play_again?
-			reset
 		end
 		display_goodbye_message
 	end
 end
 
-# ------------------------------
-
-RPSGame.new.play
+# rubocop:enable Metrics/LineLength, Metrics/MethodLength
+new_game = RPSGame.new
+new_game.play
