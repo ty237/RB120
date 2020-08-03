@@ -1,9 +1,8 @@
-# rubocop:disable Metrics/LineLength, Metrics/MethodLength
+# rubocop:disable Metrics/LineLength
+NUMBER_OF_ROUNDS = 5
 
 class Player
   attr_accessor :move, :name, :move_history, :num_of_moves
-
-  CHOICES = %w(rock paper scissors lizard spock)
 
   def initialize
     set_name
@@ -22,7 +21,7 @@ class Player
 end
 
 class Human < Player
-  SIMPLE_CHOICES = %w(r p s l sp)
+  # shorthand commands
   def set_name
     name = ""
     system('clear')
@@ -30,7 +29,7 @@ class Human < Player
       puts "What's your name?"
       name = gets.chomp
       system('clear')
-      break unless name.empty? || name.length > 5
+      break unless name.empty? || name.length > NUMBER_OF_ROUNDS
       puts "Sorry, must enter a value shorter than 10 characters."
     end
     self.name = name
@@ -41,7 +40,7 @@ class Human < Player
     loop do
       puts "Please choose rock, paper, scissors, lizard or spock."
       choice = gets.chomp.downcase
-      break if CHOICES.include?(choice) || SIMPLE_CHOICES.include?(choice)
+      break if Move::CHOICES.include?(choice) || Move::SIMPLE_CHOICES.include?(choice)
       system('clear')
       puts "That was invalid, please enter rock, paper, scissors, lizard, or spock."
     end
@@ -56,23 +55,22 @@ class Human < Player
 
   def input_to_choice(choice)
     return "spock" if choice == "sp"
-    CHOICES.each { |word| choice = word if word[0] == choice }
+    Move::CHOICES.each { |word| choice = word if word[0] == choice }
     choice
   end
 end
 
 class Computer < Player
+  def choose
+    self.move = Move.new(self.class::OPTIONS.sample)
+    super
+  end
 end
 
 class Ron < Computer
   OPTIONS = ["lizard", "lizard", "spock"]
   def set_name
     self.name = "Ron"
-  end
-
-  def choose
-    self.move = Move.new(OPTIONS.sample)
-    super
   end
 end
 
@@ -81,11 +79,6 @@ class Harry < Computer
   def set_name
     self.name = "Harry"
   end
-
-  def choose
-    self.move = Move.new(OPTIONS.sample)
-    super
-  end
 end
 
 class Hermione < Computer
@@ -93,22 +86,20 @@ class Hermione < Computer
   def set_name
     self.name = "Hermione"
   end
-
-  def choose
-    self.move = Move.new(OPTIONS.sample)
-    super
-  end
 end
 
 class Move
   attr_accessor :type, :enemies
 
+  CHOICES = %w(rock paper scissors lizard spock)
+  SIMPLE_CHOICES = %w(r p s l sp)
+
   ENEMIES = {
-    "paper" => %w(lizard scissors),
-    "scissors" => %w(rock spock),
-    "rock" => %w(spock paper),
-    "spock" => %w(lizard paper),
-    "lizard" => %w(rock scissors)
+      "paper" => %w(lizard scissors),
+      "scissors" => %w(rock spock),
+      "rock" => %w(spock paper),
+      "spock" => %w(lizard paper),
+      "lizard" => %w(rock scissors)
   }
   def initialize(type)
     self.type = type
@@ -134,7 +125,7 @@ class RPSGame
   end
 
   def display_welcome_message
-    puts "Welcome to Rock, Paper, Scissors, Lizard, Spock! Lets play first to 5 points."
+    puts "Welcome to Rock, Paper, Scissors, Lizard, Spock! Lets play first to #{NUMBER_OF_ROUNDS} points."
   end
 
   def display_goodbye_message
@@ -156,7 +147,7 @@ class RPSGame
   def display_score
     puts "#{computer.name} has #{computer_score} points."
     puts "#{human.name} has #{human_score}."
-    puts "You are #{5 - human_score} points away from winning!"
+    puts "You are #{NUMBER_OF_ROUNDS - human_score} points away from winning!"
   end
 
   def update_score(winner)
@@ -165,7 +156,7 @@ class RPSGame
   end
 
   def display_final_score
-    if human_score == 5
+    if human_score == NUMBER_OF_ROUNDS
       puts "Congratulations you are the grand winner!"
     else
       puts "You lost the whole match, better luck next time!"
@@ -176,8 +167,7 @@ class RPSGame
   end
 
   def valid?(answer)
-    return true if ["y", "yes", "n", "no"].include?(answer)
-    false
+    ["y", "yes", "n", "no"].include?(answer)
   end
 
   def continue
@@ -223,7 +213,7 @@ class RPSGame
       continue
       view_history_options
       update_score(winner)
-      break if [human_score, computer_score].include?(5)
+      break if [human_score, computer_score].include?(NUMBER_OF_ROUNDS)
       display_score
       continue
     end
@@ -238,8 +228,7 @@ class RPSGame
       system('clear')
       puts "Invalid input! Please enter y, yes, n, no."
     end
-    return true if ["y", "yes"].include?(answer)
-    false
+    ["y", "yes"].include?(answer)
   end
 
   def reset_move_histories
@@ -249,15 +238,19 @@ class RPSGame
     human.num_of_moves = 0
   end
 
+  def play_series
+    self.human_score = 0
+    self.computer_score = 0
+    play_match
+    display_final_score
+  end
+
   def play
     system('clear')
     display_welcome_message
     continue
     loop do
-      self.human_score = 0
-      self.computer_score = 0
-      play_match
-      display_final_score
+      play_series
       break unless play_again?
       reset_move_histories
     end
@@ -265,6 +258,6 @@ class RPSGame
   end
 end
 
-# rubocop:enable Metrics/LineLength, Metrics/MethodLength
+# rubocop:enable Metrics/LineLength
 new_game = RPSGame.new
 new_game.play
