@@ -1,9 +1,8 @@
-require 'pry'
 # rubocop:disable Metrics/LineLength
 
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
-                [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
-                [[1, 5, 9], [3, 5, 7]]
+    [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
+    [[1, 5, 9], [3, 5, 7]]
 
 module Joinable
   def join_or(array)
@@ -243,9 +242,9 @@ class TTTGame
 
   def play_series
     clear
+    how_many_games
     display_welcome_message
     loop do
-      how_many_games
       reset_scores
       play_match
       display_final_message(find_winner)
@@ -397,7 +396,7 @@ class TTTGame
   def display_final_message(winner)
     puts "You are the grand winner!" if winner == "user"
     puts "You lost, better luck next time!" if winner == "computer"
-    puts "The final score was #{user.name} with #{user.score} points and the computer with #{computer.score} points."
+    puts "The final score was #{user.name} with #{user.score} and the computer with #{computer.score} points."
   end
 end
 
