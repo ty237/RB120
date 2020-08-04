@@ -2,8 +2,8 @@ require 'pry'
 # rubocop:disable Metrics/LineLength
 
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
-                [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
-                [[1, 5, 9], [3, 5, 7]]
+    [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +
+    [[1, 5, 9], [3, 5, 7]]
 
 module Joinable
   def join_or(array)
@@ -276,7 +276,7 @@ class TTTGame
     marker = nil
     clear
     loop do
-      puts "Would you like you marker to be an X or an O?"
+      puts "Would you like your marker to be an X or an O?"
       marker = gets.chomp.downcase
       break if %w(x o).include?(marker)
       clear
