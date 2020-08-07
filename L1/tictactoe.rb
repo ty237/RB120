@@ -1,4 +1,3 @@
-require 'pry'
 # rubocop:disable Metrics/LineLength
 
 WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +
@@ -56,14 +55,11 @@ class Board
   INITIAL_MARKER = ' '
   def initialize
     @squares = Squares.new
-    # what data structure should we use?
-    # - array/hash of Square objects?c
-    # - array/hash of strings or integers?
   end
 
   def display(computer_marker, user_marker)
     system 'clear'
-    puts "You're a #{computer_marker}. Computer is a #{user_marker}."
+    puts "You're a #{user_marker}. Computer is a #{computer_marker}."
     puts ""
     puts "     |     |"
     puts "  #{squares[1]}  |  #{squares[2]}  |  #{squares[3]}"
@@ -146,11 +142,11 @@ class Human < Player
     answer = nil
     loop do
       puts "Choose a square: #{join_or(board.empty_squares)}."
-      answer = gets.chomp.to_i
-      break if board.empty_squares.include?(answer)
-      puts "Invalid input!"
+      answer = gets.chomp
+      break if board.empty_squares.include?(answer.to_i) && answer == answer.to_i.to_s
+      puts "Invalid input! Please enter a whole number"
     end
-    board.take_square(answer, marker)
+    board.take_square(answer.to_i, marker)
   end
 
   private
@@ -214,7 +210,7 @@ class TTTGame
   def play_round
     loop do
       board.display(computer.marker, user.marker) if current_player == "user"
-      fill_square
+      occupy_square
       break if someone_won? || board.full?
       switch_player
     end
@@ -261,13 +257,14 @@ class TTTGame
 
   def initialize
     human_marker = ask_for_marker
+    p human_marker
     computer_marker = determine_marker(human_marker)
     @user = Human.new(human_marker)
     @computer = Computer.new(computer_marker)
   end
 
   def continue
-    puts "Press any key to continue"
+    puts "Press return key to continue"
     gets
     clear
   end
@@ -307,7 +304,7 @@ class TTTGame
     self.current_player = (current_player == "user" ? "computer" : "user")
   end
 
-  def fill_square
+  def occupy_square
     if current_player == "user"
       user.move(board)
     else
@@ -378,7 +375,7 @@ class TTTGame
       answer = gets.chomp
       break if valid?(answer)
       clear
-      puts "That was invalid!"
+      puts "That was invalid! Please enter y, n, yes or no."
     end
     return true if ["yes", "y"].include?(answer)
     false
@@ -402,5 +399,9 @@ class TTTGame
 end
 
 # rubocop:enable Metrics/LineLength
+system('clear')
+puts "Welcome to Tic Tac Toe!"
+puts "Press any key to continue!"
+gets
 game = TTTGame.new
 game.play_series
