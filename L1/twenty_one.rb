@@ -1,5 +1,5 @@
 # rubocop:disable Metrics/LineLength
-MEAN = { 'H' => 'Hearts', 'D' => 'Diamonds',
+CARD_TYPE = { 'H' => 'Hearts', 'D' => 'Diamonds',
          'C' => 'Clubs', 'S' => 'Spades' }
 
 TOP_VALUE = 21
@@ -13,7 +13,7 @@ end
 module Joinable
   def join_and(type = "all")
     cards = hand.cards.map do |sub_array|
-      "#{sub_array[1]} of #{MEAN[sub_array[0]]}"
+      "#{sub_array[1]} of #{CARD_TYPE[sub_array[0]]}"
     end
     return cards[0] if self.class == Dealer && type != "all"
     return cards.join if hand.cards.size == 1
@@ -24,6 +24,8 @@ end
 
 class Player
   attr_accessor :score, :hand
+
+  include Joinable
 
   def total_value
     hand.total_value
@@ -60,8 +62,6 @@ class Player
     return true if hand.total_value > TOP_VALUE
     false
   end
-
-  include Joinable
 end
 
 class Dealer < Player
@@ -122,21 +122,18 @@ class Participant < Player
   def ask_for_name
     name = nil
     loop do
-      prompt "What is your name?"
+      prompt "What is you name?"
       name = gets.chomp
-      break unless name.empty?
-      puts "You must type something!"
-    end
-    @name = name
-    system('clear')
+      break if !name.empty? && !name.split.empty?
+      puts "You have to type something!"
+     end
+    name
   end
 end
 
 class Deck
   SUITS = %w(H D S C)
   VALUES = %w(2 3 4 5 6 7 8 9 Jack King Queen Ace)
-  MEAN = { 'H' => 'Hearts', 'D' => 'Diamonds',
-           'C' => 'Clubs', 'S' => 'Spades' }
 
   attr_reader :deck
 
@@ -169,7 +166,7 @@ class Card
 
   def join_and
     cards = [descriptions].map do |sub_array|
-      "#{sub_array[1]} of #{MEAN[sub_array[0]]}"
+      "#{sub_array[1]} of #{CARD_TYPE[sub_array[0]]}"
     end
     cards[0]
   end
@@ -218,7 +215,7 @@ class Game
     @games = how_many_games
   end
 
-  include Promptable
+  include Promptable, Joinable
 
   def game_round
     initialize_hands
@@ -250,7 +247,7 @@ class Game
     loop do
       reset_game
       play_match
-      final_message
+      display_final_results
       break unless play_again?
     end
     display_goodbye_message
@@ -259,7 +256,7 @@ class Game
   private
 
   def display_goodbye_message
-    puts "Thanks for playing Tic Tac Toe #{user.name}! Goodbye."
+    puts "Thanks for playing Twenty One #{user.name}! Goodbye."
   end
 
   def play_again?
@@ -274,14 +271,10 @@ class Game
   end
 
   def return_boolean(answer)
-    if %(y, yes).include?(answer)
-      true
-    else
-      false
-    end
+    %(y, yes).include?(answer)
   end
 
-  def final_message
+  def display_final_results
     clear
     puts "The final score was the dealer with #{dealer.score} points and #{user.name} with #{user.score} points!"
     if user == 5
@@ -346,7 +339,7 @@ class Game
     system('clear')
   end
 
-  def dynamic_message(winner)
+  def round_result_message(winner)
     return "You busted!" if user.total_value > TOP_VALUE
     return "The dealer busted!" if dealer.total_value > TOP_VALUE
     return "You won!" if winner == "User"
@@ -356,13 +349,11 @@ class Game
 
   def display_winner(winner)
     clear
-    puts dynamic_message(winner)
+    puts round_result_message(winner)
     puts "The dealer's cards were a #{dealer.join_and}."
     puts "Your cards were a #{user.join_and}."
     puts "The dealer's total was #{dealer.total} while your total was #{user.total}."
   end
-
-  include Joinable
 
   def display_welcome_message
     puts "Let's play first to #{games} games of twenty-one!"
